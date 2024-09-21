@@ -16,6 +16,7 @@
     "isolatedModules": true,
     "moduleDetection": "force"
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "tailwind.config.ts", "postcss.config.cjs"],
+  "exclude": ["node_modules/*", "public/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
