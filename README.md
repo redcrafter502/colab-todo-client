@@ -1,3 +1,7 @@
+# This repo is archived
+
+For the up to date version of the client see: [https://github.com/redcrafter502/colab-todo](https://github.com/redcrafter502/colab-todo)
+
 # Svelte + TS + Vite
 
 This template should help get you started developing with Svelte and TypeScript in Vite.
