@@ -1,6 +1,9 @@
 <script lang="ts">
     import ToDoItem from "./ToDoItem.svelte"
+    import {onMount} from "svelte";
 
+    export let id: number
+    let socket: WebSocket | null
     let name = ""
     let todoBeingAdded = ""
     let todos: {
@@ -14,6 +17,44 @@
             completed: false
         }
     ]
+
+    $: send("name-changed", name)
+
+    async function send(cmd: string, msg: string) {
+        console.log("sending", cmd, msg)
+        if (socket == null) return
+        socket.send(`${cmd}:${msg}`)
+    }
+
+    onMount(function () {
+        console.log(id)
+        socket = new WebSocket(`ws://localhost:8080/ws?id=${id}`)
+
+        socket.onopen = function () {
+            console.log("Socket connected")
+            send("init", "0")
+        }
+
+        socket.onerror = function (e) {
+            console.log("Socket Error: ", e)
+        }
+
+        socket.onmessage = function (e) {
+            console.log('received', e.data)
+            const dataArray = e.data.split(":")
+            const cmd = dataArray[0]
+            const msg = dataArray.slice(1).join(":")
+
+            switch (cmd) {
+                case "init":
+                    name = msg
+                    break
+                case "name-changed":
+                    name = msg
+                    break
+            }
+        }
+    })
 
     function addTodo() {
         todos = [...todos, {
